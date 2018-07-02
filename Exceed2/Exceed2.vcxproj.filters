@@ -15,11 +15,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="listener.cpp">
+    <ClCompile Include="ROTException.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ListeningThread.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thread.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ClientThread.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

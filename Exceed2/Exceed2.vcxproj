@@ -65,8 +65,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="listener.cpp" />
-    <ClCompile Include="thread.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ListeningThread.h" />
+    <ClCompile Include="ROTException.h" />
+    <ClCompile Include="ClientThread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
