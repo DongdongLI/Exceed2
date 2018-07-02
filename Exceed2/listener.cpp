@@ -25,14 +25,6 @@ private:
 	const char* message;
 };
 
-class thread_obj {
-public:
-	int operator()(){
-		
-		return 0;
-	}
-};
-
 const int REQ_WINSOCK_VER = 2;
 const int PORT = 6000;
 const int TEMP_BUFFER_SIZE = 128;
@@ -87,8 +79,8 @@ void handleConnection(SOCKET clientSocket, const sockaddr_in &sockAddr){
 }
 
 bool RunServer(int portNumber){
-	SOCKET hSocket = INVALID_SOCKET,
-		hClientSocket = INVALID_SOCKET;
+	SOCKET hSocket = INVALID_SOCKET;
+	//SOCKET hClientSocket = INVALID_SOCKET;
 
 	bool success = true;
 	sockaddr_in sockAddr = { 0 };
@@ -111,18 +103,21 @@ bool RunServer(int portNumber){
 		cout << "done.\n";
 
 		cout << "Waiting for incoming connection... ";
+		
+		while (true){
+			sockaddr_in clientSockAddr;
+			int	clientSockSize = sizeof(clientSockAddr);
 
-		sockaddr_in clientSockAddr;
-		int	clientSockSize = sizeof(clientSockAddr);
 
+			SOCKET hClientSocket = accept(hSocket, reinterpret_cast<sockaddr*>(&clientSockAddr), &clientSockSize);
 
-		hClientSocket = accept(hSocket, reinterpret_cast<sockaddr*>(&clientSockAddr), &clientSockSize);
+			if (hClientSocket == INVALID_SOCKET)
+				throw ROTException("accept function failed.");
+			cout << "accepted.\n";
 
-		if (hClientSocket == INVALID_SOCKET)
-			throw ROTException("accept function failed.");
-		cout << "accepted.\n";
-
-		handleConnection(hClientSocket, clientSockAddr);
+			handleConnection(hClientSocket, clientSockAddr);
+		}
+		
 	}
 	catch (ROTException e){
 		cerr << "\nError: " << e.what() << endl;
@@ -131,8 +126,8 @@ bool RunServer(int portNumber){
 
 	if (hSocket != INVALID_SOCKET)
 		closesocket(hSocket);
-	if (hClientSocket != INVALID_SOCKET)
-		closesocket(hClientSocket);
+	//if (hClientSocket != INVALID_SOCKET)
+	//	closesocket(hClientSocket);
 
 	return success;
 }
