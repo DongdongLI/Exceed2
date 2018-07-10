@@ -23,7 +23,7 @@ public:
 	static void browse(string url){
 		string command = "rundll32 url.dll,FileProtocolHandler " + url;
 		system(command.c_str());
-		// todo. call the command more directly
+		// todo. call the command more directly//MSVCP120D.dll
 	}
 
 	int operator()(SOCKET clientSocket, const sockaddr_in &sockAddr){
@@ -42,19 +42,58 @@ public:
 				throw ROTException("socket error while receiving. ");
 			}
 			else{
-				if (tempBuffer[0] == '\r'){
+				
+				cout << tempBuffer[0] << endl;
+				if (tempBuffer[0] == '\r' || tempBuffer[0] == '\n'){
 					cout << "found a enter" << endl;
 					cout << "url: " << url << endl;
-					browse(url);
+					if (!isEmpty(url))
+						browse(url);
 					url = "";
 				}
-
-				url += tempBuffer[0];
+				else{
+					//url += tempBuffer[0];
+					for (int i = 0; i < res; i++)
+						url += tempBuffer[i];
+				}
+				
+				/*
+				for (int i = 0; i < res; i++){
+					if (tempBuffer[i] != '\0' 
+						&& tempBuffer[i] != '\n' 
+						&& tempBuffer[i] != '\r'){
+						url += tempBuffer[i];
+					}
+					else{
+						cout << "url: " << url << endl;
+						browse(url);
+						url = "";
+					}
+						
+				}
+				*/
 				if (send(clientSocket, tempBuffer, res, 0) == SOCKET_ERROR)
 					throw ROTException("socket error while sending");
 			}
 		}
 
 		cout << "Connection closed.\n";
+	}
+
+	static boolean isEmpty(string url){
+		if (url.empty() || url.length() == 0)
+			return true;
+
+		int characterCount = 0;
+		for (int i = 0; i < url.length(); i++){
+			if (url.at(i) != '\n'
+				&& url.at(i) != '\r'
+				&& url.at(i) != '\0'
+				&& url.at(i) != ' ')
+				
+				characterCount++;
+		}
+
+		return characterCount == 0;
 	}
 };

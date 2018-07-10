@@ -51,21 +51,19 @@ public:
 
 				cout << "Waiting for incoming connection... ";
 
-				//while (true){
-					sockaddr_in clientSockAddr;
-					int	clientSockSize = sizeof(clientSockAddr);
+				sockaddr_in clientSockAddr;
+				int	clientSockSize = sizeof(clientSockAddr);
 
 
-					SOCKET hClientSocket = accept(hSocket, reinterpret_cast<sockaddr*>(&clientSockAddr), &clientSockSize);
+				SOCKET hClientSocket = accept(hSocket, reinterpret_cast<sockaddr*>(&clientSockAddr), &clientSockSize);
 
-					if (hClientSocket == INVALID_SOCKET)
-						throw ROTException("accept function failed.");
-					cout << "accepted.\n";
+				if (hClientSocket == INVALID_SOCKET)
+					throw ROTException("accept function failed.");
+				cout << "accepted.\n";
 
-					//handleConnection(hClientSocket, clientSockAddr);
-					thread newThread(thread_obj(), hClientSocket, clientSockAddr);
-					newThread.detach();
-				//}
+				//handleConnection(hClientSocket, clientSockAddr);
+				thread newThread(thread_obj(), hClientSocket, clientSockAddr);
+				newThread.detach();
 
 			}
 			catch (ROTException e){
